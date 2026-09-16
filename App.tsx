@@ -1,87 +1,88 @@
-import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, ScrollView, Image, TextInputComponent, TouchableOpacity, TextInputBase, TextInput, KeyboardAvoidingView, } from 'react-native';
+import { useState } from 'react';
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import CoffeeCard from './components/CoffeeCard';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 
 export default function App() {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleOrder = () => {
+    if (name.trim() === "") {
+      setMessage("Por favor, informe seu nome!");
+    } else {
+      setMessage(`Olá, ${name}! Seu pedido foi recebido.`)
+    }
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container}
-    behavior="padding"
-    keyboardVerticalOffset={30}>
-    <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
+      behavior="padding"
+      keyboardVerticalOffset={30}>
 
-        <View>
-          <Text style={styles.headerTitle}>Café do código</Text>
-          <Text style={styles.headerSubtitle}>Seu café, uma linha por vez</Text>
+      <ScrollView>
+        {/* Header */}
+        <Header></Header>
+        {/* Header */}
+
+
+        <View style={styles.content}>
+          <View style={styles.grettingSection}>
+            <Text style={styles.grettingTitle}>Bom dia!</Text>
+            <Text style={styles.grettingSubtitle}>Que tal um café hoje?</Text>
+          </View>
+
+          <View style={styles.featured}>
+            <Image style={styles.image} source={require('./assets/coffee.jpg')}></Image>
+            <Text style={styles.featuredTitle}>Cappucino Especial</Text>
+            <Text style={styles.featuredDescription}>Cremoso e delicioso</Text>
+            <Text style={styles.featuredPrice}>R$ 12,90</Text>
+          </View>
+
+
+          <Text style={styles.sectionTitle}>Nosso Cardápio</Text>
+
+
+          <View style={styles.menu}>
+            <CoffeeCard name="Espresso" description="Puro e forte" price="R$ 7.00" />
+
+            <CoffeeCard name="Cappucino" description="Clássico com espuma" price="R$ 12.90" />
+
+            <CoffeeCard name="Latte" description="Leite cremoso" price="R$ 11.50" />
+
+            <CoffeeCard name="Mocha" description="Toque de chocolate" price="R$ 13.50" />
+          </View>
+
+
+          <View style={styles.orderSection}>
+            <Text style={styles.question}>Qual é o seu nome?</Text>
+
+            <TextInput style={styles.input}
+              placeholder="Digite seu nome"
+              value={name}
+              onChangeText={setName}
+            ></TextInput>
+
+            <TouchableOpacity style={styles.button} onPress={handleOrder}>
+              <Text style={styles.buttonText}>Fazer meu pedido</Text>
+            </TouchableOpacity>
+
+            {message !== '' && (
+              <Text style={styles.messageText}>{message}</Text>
+            )}
+          </View>
+
         </View>
 
-        <View style={styles.avatarPlaceholder}>
-          <Ionicons name="person" size={20} color="#2f2d2c"></Ionicons>
-        </View>
-      </View>
-
-    
-    <View style={styles.content}>
-      <View style={styles.grettingSection}>
-        <Text style={styles.grettingTitle}>Bom dia!</Text>
-        <Text style={styles.grettingSubtitle}>Que tal um café hoje?</Text>
-      </View>
-
-      <View style={styles.featured}>
-        <Image style ={styles.image} source={require('./assets/coffee.jpg')}></Image>
-        <Text style={styles.featuredTitle}>Cappucino Especial</Text>
-        <Text style={styles.featuredDescription}>Cremoso e delicioso</Text>
-        <Text style={styles.featuredPrice}>R$ 12,90</Text>      
-      </View>
+        {/*footer */}
+        <Footer></Footer>
+        {/*footer */}
 
 
-      <Text style={styles.sectionTitle}>Nosso Cardápio</Text>
-    
-
-      <View style={styles.menu}>
-        <View style={styles.miniFeatured}>
-          <Text style={styles.produtoTitle}>Espresso</Text>
-          <Text style={styles.produtoDescription}>Puro e forte</Text>
-          <Text style={styles.produtoPrice}>R$ 7,00</Text>
-        </View>
-
-        <View style={styles.miniFeatured}>
-          <Text style={styles.produtoTitle}>Cappuccino</Text>
-          <Text style={styles.produtoDescription}>Clássico com espuma</Text>
-          <Text style={styles.produtoPrice}>R$ 12,90</Text>
-        </View>
-
-        <View style={styles.miniFeatured}>
-          <Text style={styles.produtoTitle}>Latte</Text>
-          <Text style={styles.produtoDescription}>Leite cremoso</Text>
-          <Text style={styles.produtoPrice}>R$ 11,50</Text>
-        </View>
-
-        <View style={styles.miniFeatured}>
-          <Text style={styles.produtoTitle}>Mocha</Text>
-          <Text style={styles.produtoDescription}>Toque de chocolate</Text>
-          <Text style={styles.produtoPrice}>R$ 13,50</Text>
-        </View>        
-      </View>
-
-
-      <View style={styles.orderSection}>
-        <Text style={styles.question}>Qual é o seu nome?</Text>
-        
-        <TextInput style={styles.input} placeholder="Digite seu nome"></TextInput>
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Fazer meu pedido</Text>
-        </TouchableOpacity>
-      </View>
-
-
-    </View>
-    
-
-    </ScrollView>
-   </KeyboardAvoidingView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -89,37 +90,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9F9F9'
-  },
-
-  header: {
-    width: '100%',
-    paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: "#2f2d2c"
-  },
-
-  headerSubtitle: {
-    fontSize: 14,
-    color: "#9b9b9b",
-    marginTop: 4
-  },
-
-  avatarPlaceholder: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center"
   },
 
   content: {
@@ -135,20 +105,20 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '800',
     color: "#2f2d2c"
-  }, 
-  
+  },
+
   grettingSubtitle: {
     fontSize: 14,
     color: "#9b9b9b",
     marginTop: 8
   },
 
-   featured: {
+  featured: {
     backgroundColor: "#ffffff",
     padding: 16,
     borderRadius: 24,
     shadowColor: "#000000",
-    shadowOffset: {width:0, height: 8},
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.05,
     elevation: 4,
     marginBottom: 32
@@ -187,35 +157,6 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
 
-  miniFeatured: {
-    backgroundColor: "#ffffff",
-    padding: 16,
-    borderRadius: 16,
-    shadowColor: "#000000",
-    shadowOffset: {width:0, height: 4},
-    shadowOpacity: 0.05,
-    elevation: 3,
-    width: "48%",
-    marginBottom: 16,
-  },
-
-  produtoTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-  },
-
-  produtoDescription: {
-    fontSize: 12,
-    marginTop: 4
-  },
-
-  produtoPrice: {
-    fontSize: 16,
-    fontWeight: "800",
-    marginTop: 12,
-    color: "#c67c4e"
-  },
-
   menu: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -228,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 24,
     borderRadius: 24,
     shadowColor: "#000000",
-    shadowOffset: {width:0, height:8},
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.05,
     elevation: 4,
     marginTop: 10
@@ -259,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     shadowColor: "#c67c4e",
-    shadowOffset: {width: 0, height: 4},
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 4
@@ -270,5 +211,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#ffffff",
   },
+
+  messageText: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#c67c4e",
+    textAlign: "center",
+    marginTop: 20,
+  }
 
 });
